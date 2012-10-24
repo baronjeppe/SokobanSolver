@@ -11,6 +11,7 @@ public class Main {
 		mc = new MapController("mymap.txt");
 		
 		System.out.println(mc.calcRouteForSokobandit("rrdddlluurulrrrrdlullldddrruulur", 'r', true, 50));
+        //kommentaren er en gittest... bare slet
 		
 	}
 	
