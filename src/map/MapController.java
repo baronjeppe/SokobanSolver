@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import boxSolver.BoxSolver;
+
 
 public class MapController {
 	
@@ -42,6 +44,13 @@ public class MapController {
 		r[0] = -1;
 		r[1] = -1;
 		return r;
+	}
+	
+	public String solve()
+	{
+		BoxSolver BS = new BoxSolver();
+		
+		return BS.solve(map.map, findSolver(map));
 	}
 	
 	public String calcRouteForSokobandit(String sol, char start_orientation, boolean show_route, int wait)

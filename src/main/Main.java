@@ -9,10 +9,10 @@ public class Main {
 	public static void main(String[] args) {
 		
 		mc = new MapController("mymap.txt");
-		
-		System.out.println(mc.calcRouteForSokobandit("rrdddlluurulrrrrdlullldddrruulur", 'r', true, 50));
+		String test = mc.solve();
+		System.out.println(mc.calcRouteForSokobandit(test, 'r', true, 500));
         //kommentaren er en gittest... bare slet
-		
+
 	}
 	
 }
