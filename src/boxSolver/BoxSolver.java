@@ -72,7 +72,7 @@ public class BoxSolver {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}*/
-		    Node currentNode = fringe.getFirst();
+		    Node currentNode = fringe.get(0);
 		    
 		    if (currentNode.state.equalToMap(map)) {
 		    	System.out.println("Solution Found\n");
@@ -82,23 +82,30 @@ public class BoxSolver {
 		    }
 		    temp = currentNode.expand();
 		    while(!temp.isEmpty()){
+		    	boolean placeFound = false;
 		    	for(int i = 0; i < fringe.size(); i++){
 		    		if(temp.getFirst().state.price <= fringe.get(i).state.price){
 		    			fringe.add(i,temp.pollFirst());
+		    			//System.out.println(fringe.get(i).state.price);
+		    			placeFound = true;
 		    			break;
 		    		}
 		    	}
+		    	if (!placeFound) {
+	    			fringe.add(temp.pollFirst());
+	    			//System.out.println(fringe.getLast().state.price);
+		    	}
 		    }
-		    System.out.println(fringe.getFirst().state.price);
+		    //System.out.println(fringe.getFirst().state.price);
 		    fringe.remove();
-		    
+		    /*
 		    try {
-				Thread.sleep(1000);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		    	
+		    	*/
 		    //System.out.println(Node.nodesExpanded);
 		}
 		return ret;

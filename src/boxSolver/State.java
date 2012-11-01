@@ -26,8 +26,7 @@ class State {
 		mover[1] = Mover[1];
 		noOfMoves = 0;
 		price = 0;
-		Astar astar = new Astar();
-		heuristic = astar.calcMoverRoute(original_map);
+		heuristic = Astar.calcMoverRoute(original_map);
 
    
     }
@@ -42,17 +41,14 @@ class State {
 		mover = new int[2];
 		mover[0] = orig.mover[0];
 		mover[1] = orig.mover[1];
-		noOfMoves = orig.noOfMoves++;
-		Astar astar = new Astar();
-		int[] start = new int[2];
-		start[0] = 0;start[1] = 0;
-		heuristic = astar.calcMoverRoute(original_map);
-		price = orig.price++;
+		noOfMoves = orig.noOfMoves + 1;
+		heuristic = Astar.calcMoverRoute(original_map);
+		price = orig.price + 1;
 
     }
     
     private int calcNewBoxPrice(int newBoxX, int newBoxY, int boxX, int boxY){
-    	return heuristic[newBoxX][newBoxY] - heuristic[boxX][boxY];
+    	return 0;//heuristic[newBoxX][newBoxY] - heuristic[boxX][boxY];
     }
 	
     private void makeMove(int newX, int newY) {

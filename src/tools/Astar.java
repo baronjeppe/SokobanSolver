@@ -8,7 +8,7 @@ public class Astar {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public ArrayList<Integer> findGoals(int[][] map){
+	public static ArrayList<Integer> findGoals(int[][] map){
 
 		ArrayList<Integer> ret = new ArrayList<Integer>();
 
@@ -23,7 +23,7 @@ public class Astar {
 		return ret;
 	}
 	
-	public int[][] calcMoverRoute(int[][] map)
+	public static int[][] calcMoverRoute(int[][] map)
 	{
 		int[][] ret = new int[map.length][map[0].length];
 		Square[][] squares = new Square[map.length][map[0].length];
@@ -137,24 +137,6 @@ public class Astar {
 				goal_found = true;		
 		}
 		return ret;
-	}
-	
-	private class Square
-	{
-		public int price;
-		public int x;
-		public int y;
-		
-		public boolean isClosed;
-		public boolean isOpen;
-		
-		public Square(int X, int Y, int Price) {
-			x = X;
-			y = Y;
-			price = Price;
-			isClosed = false;
-			isOpen = false;
-		}
 	}
 
 }
