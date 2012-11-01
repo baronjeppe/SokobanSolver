@@ -29,12 +29,14 @@ class Node {
 	if (newState!=null) childNodes.addLast( new Node(this, 'U', newState ) );
 	return(childNodes);
     }
-
-    public String printSolution() { 
-	if( parent!= null ) {
-	    System.out.println( move );
-	    return move + parent.printSolution();
-	}
-	return "";
+    
+    public String printSolution(){
+    	if( parent!= null ) {
+    	    System.out.print( move );
+    	    return move + parent.printSolution();
+    	}
+    	return "";
     }
+    
+ 
 }

@@ -8,19 +8,41 @@ public class Astar {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Route calcMoverRoute(int[][] map, int[] start, int[] goal)
+	public ArrayList<Integer> findGoals(int[][] map){
+
+		ArrayList<Integer> ret = new ArrayList<Integer>();
+
+		for(int i = 0; i < map.length; i++)
+			for(int j = 0; j < map[0].length; j++){
+				if(map[i][j] >= 100 && map[i][j] < 999){
+					ret.add(i);
+					ret.add(j);
+				}
+			}
+		
+		return ret;
+	}
+	
+	public int[][] calcMoverRoute(int[][] map)
 	{
+		int[][] ret = new int[map.length][map[0].length];
 		Square[][] squares = new Square[map.length][map[0].length];
 		
 		for (int i = 0; i<map.length; i++)
 			for (int j = 0; j<map[0].length;j++)
 				squares[i][j] = new Square(i,j,10000);
-
 		
 		ArrayList<Square> open_list = new ArrayList<Square>();
+		ArrayList<Integer> goals = findGoals(map);
 		
-		squares[goal[0]][goal[1]].price = 0;
-		open_list.add(squares[goal[0]][goal[1]]);
+		/*for(int i = 0; i < goals.size(); i++)
+			System.out.println(goals.get(i));*/
+
+		
+		for(int i = 0; i < goals.size(); i += 2){
+			squares[goals.get(i)][goals.get(i+1)].price = 0;
+			open_list.add(squares[goals.get(i)][goals.get(i+1)]);
+		}
 		
 		while(!open_list.isEmpty()){
 			
@@ -57,21 +79,21 @@ public class Astar {
 			
 			open_list.remove(0);
 		}
-		
-		for (int i = 0; i < map[0].length; i++)
-		{
-			for (int j = 0; j < map.length; j++)
+		/*
+		for (int i = 0; i < map[0].length; i++){
+			for (int j = 0; j < map.length; j++){
 				System.out.print(squares[j][i].price + "\t");
+			}
 			System.out.println("");
-		}		
+		}	*/
 		
-		String ret = RouteToString(squares, start);
-		System.out.println("Route: " + ret);
 		
-		if (!ret.equals("-"))
-			return new Route(squares[start[0]][start[1]].price,ret,true);
-		else
-			return null;
+		for(int i = 0; i < map.length; i++)
+			for(int j = 0; j < map[0].length; j++)
+				ret[i][j] = squares[j][i].price;
+		
+		return ret;
+		
 	}
 	
 	private String RouteToString(Square[][] squares, int[] start)

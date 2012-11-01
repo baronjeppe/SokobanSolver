@@ -16,7 +16,7 @@ public class BoxSolver {
 		for (int i = 0; i<map.length; i++)
 			for (int j = 0; j<map[0].length;j++){
 				if (map[i][j] == 100)
-					ret[i][j] = 100;
+					ret[i][j] = 2;
 				else if (map[i][j] == 10)
 					ret[i][j] = 2;
 				else if (map[i][j] == 1000)
@@ -47,9 +47,11 @@ public class BoxSolver {
 		String ret = new String();
 		
 		LinkedList<Node> fringe = new LinkedList<Node>();
+		LinkedList<Node> temp = new LinkedList<Node>();
+
 		
-		State initialState = new State(reverseMap(map), mover);
 		State.original_map = makeOriginalMap(map);
+		State initialState = new State(reverseMap(map), mover);
 		
 		Node initialNode = new Node(null,'-',initialState);
 		
@@ -59,16 +61,44 @@ public class BoxSolver {
 		    	System.out.println("No Solution Found\n");
 		    	break;
 		    }
-
-		    Node currentNode = fringe.removeFirst();
-
+		    
+		    //currentNode.state.printMap(currentNode.state.map);
+		   // currentNode.printSolution();
+		   // System.out.println();
+		    
+		    /*try {
+				Thread.sleep(0);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+		    Node currentNode = fringe.getFirst();
+		    
 		    if (currentNode.state.equalToMap(map)) {
 		    	System.out.println("Solution Found\n");
 		    	ret = currentNode.printSolution();
 		    	System.out.println("Nodes expanded: " + Integer.toString( Node.nodesExpanded ) );
 		    	break;
 		    }
-		    fringe.addAll( currentNode.expand() );
+		    temp = currentNode.expand();
+		    while(!temp.isEmpty()){
+		    	for(int i = 0; i < fringe.size(); i++){
+		    		if(temp.getFirst().state.price <= fringe.get(i).state.price){
+		    			fringe.add(i,temp.pollFirst());
+		    			break;
+		    		}
+		    	}
+		    }
+		    System.out.println(fringe.getFirst().state.price);
+		    fringe.remove();
+		    
+		    try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    	
 		    //System.out.println(Node.nodesExpanded);
 		}
 		return ret;
