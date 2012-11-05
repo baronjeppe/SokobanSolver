@@ -1,5 +1,6 @@
 package main;
 
+import timer.Timer;
 import map.MapController;
 
 public class Main {
@@ -8,10 +9,13 @@ public class Main {
 	
 	public static void main(String[] args) {
 		
+		Timer t = new Timer();
 		mc = new MapController("mymap.txt");
+		t.restart();
 		String test = mc.solve();
-		System.out.println(mc.calcRouteForSokobandit(test, 'r', true, 500));
-        //kommentaren er en gittest... bare slet
+        t.printTimeSinceStartInSeconds();
+		System.out.println(mc.calcRouteForSokobandit(test, 'r', true, 100));
+		//kommentaren er en gittest... bare slet
 
 	}
 	

@@ -50,6 +50,20 @@ class Node {
     }
     
     @Override
+    public String toString()
+    {
+    	String ret = new String();
+    	
+    	for (int i = 0; i < state.map.length; i++)
+    		for (int j = 0; j < state.map[0].length; j++)
+    		{
+    			ret += String.valueOf(state.map[i][j]);
+    		}
+    	//System.out.println(ret);
+    	return ret;
+    }
+    
+    @Override
     public boolean equals(Object obj)
     {
     	Node temp = (Node)obj;

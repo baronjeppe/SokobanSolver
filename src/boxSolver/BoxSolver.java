@@ -1,5 +1,6 @@
 package boxSolver;
 
+import Hashing.QuadraticProbingHashTable;
 import boxSolver.Node;
 
 import java.util.LinkedList;
@@ -47,7 +48,9 @@ public class BoxSolver {
 		String ret = new String();
 		
 		LinkedList<Node> openList = new LinkedList<Node>();
-		LinkedList<Node> closedList = new LinkedList<Node>();
+		//LinkedList<Node> closedList = new LinkedList<Node>();
+		QuadraticProbingHashTable<Node> closedList = new QuadraticProbingHashTable<Node>();
+		QuadraticProbingHashTable<Node> openListHash = new QuadraticProbingHashTable<Node>();
 		LinkedList<Node> temp = new LinkedList<Node>();
 
 		
@@ -57,6 +60,8 @@ public class BoxSolver {
 		Node initialNode = new Node(null,'-',initialState);
 		
 		openList.add(initialNode);
+		openListHash.insert(initialNode);
+		
 		while(true) {
 		    if (openList.isEmpty() ) {
 		    	System.out.println("No Solution Found\n");
@@ -77,16 +82,18 @@ public class BoxSolver {
 		    while(!temp.isEmpty()){
 		    	boolean placeFound = false;
 		    	
-		    	if (!openList.contains(temp.getFirst()) && !closedList.contains(temp.getFirst())) {
+		    	if (!openListHash.contains(temp.getFirst()) && !closedList.contains(temp.getFirst())) {
 			    	for(int i = 0; i < openList.size(); i++){
 			    		if(temp.getFirst().state.price < openList.get(i).state.price){
-			    			openList.add(i,temp.pollFirst());
+			    			openList.add(i,temp.getFirst());
+			    			openListHash.insert(temp.pollFirst());
 			    			placeFound = true;
 			    			break;
 			    		}
 			    	}
 			    	if (!placeFound) {
-		    			openList.add(temp.pollFirst());
+		    			openList.add(temp.getFirst());
+		    			openListHash.insert(temp.pollFirst());
 			    	}
 
 		    	}
@@ -94,14 +101,15 @@ public class BoxSolver {
 		    		temp.removeFirst();
 		    	}
 		    }
-		    System.out.println(Node.nodesExpanded);
+		    //System.out.println(Node.nodesExpanded);
 	    	//System.out.println("Price: " + currentNode.state.price);
 	    	//currentNode.state.printMap(currentNode.state.map);
 	    	//System.out.println(closedList.size());
 		    //System.out.println(openList.size());
 		    if (!closedList.contains(currentNode))
-		    	closedList.addFirst(currentNode);
+		    	closedList.insert(currentNode);
 		    openList.remove();
+		    openListHash.remove(currentNode);
 
 		}
 		return ret;
