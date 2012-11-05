@@ -85,7 +85,7 @@ public class Astar {
 				System.out.print(squares[j][i].price + "\t");
 			}
 			System.out.println("");
-		}	*/
+		}*/	
 		
 		
 		for(int i = 0; i < map.length; i++)

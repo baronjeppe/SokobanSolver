@@ -46,7 +46,8 @@ public class BoxSolver {
 	{
 		String ret = new String();
 		
-		LinkedList<Node> fringe = new LinkedList<Node>();
+		LinkedList<Node> openList = new LinkedList<Node>();
+		LinkedList<Node> closedList = new LinkedList<Node>();
 		LinkedList<Node> temp = new LinkedList<Node>();
 
 		
@@ -55,58 +56,53 @@ public class BoxSolver {
 		
 		Node initialNode = new Node(null,'-',initialState);
 		
-		fringe.add(initialNode);
+		openList.add(initialNode);
 		while(true) {
-		    if (fringe.isEmpty() ) {
+		    if (openList.isEmpty() ) {
 		    	System.out.println("No Solution Found\n");
 		    	break;
 		    }
 		    
-		    //currentNode.state.printMap(currentNode.state.map);
-		   // currentNode.printSolution();
-		   // System.out.println();
-		    
-		    /*try {
-				Thread.sleep(0);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
-		    Node currentNode = fringe.get(0);
+		    Node currentNode = openList.get(0);
 		    
 		    if (currentNode.state.equalToMap(map)) {
 		    	System.out.println("Solution Found\n");
 		    	ret = currentNode.printSolution();
+		    	System.out.println("Price: " + currentNode.state.price);
 		    	System.out.println("Nodes expanded: " + Integer.toString( Node.nodesExpanded ) );
 		    	break;
 		    }
 		    temp = currentNode.expand();
+		    
 		    while(!temp.isEmpty()){
 		    	boolean placeFound = false;
-		    	for(int i = 0; i < fringe.size(); i++){
-		    		if(temp.getFirst().state.price <= fringe.get(i).state.price){
-		    			fringe.add(i,temp.pollFirst());
-		    			//System.out.println(fringe.get(i).state.price);
-		    			placeFound = true;
-		    			break;
-		    		}
+		    	
+		    	if (!openList.contains(temp.getFirst()) && !closedList.contains(temp.getFirst())) {
+			    	for(int i = 0; i < openList.size(); i++){
+			    		if(temp.getFirst().state.price < openList.get(i).state.price){
+			    			openList.add(i,temp.pollFirst());
+			    			placeFound = true;
+			    			break;
+			    		}
+			    	}
+			    	if (!placeFound) {
+		    			openList.add(temp.pollFirst());
+			    	}
+
 		    	}
-		    	if (!placeFound) {
-	    			fringe.add(temp.pollFirst());
-	    			//System.out.println(fringe.getLast().state.price);
+		    	else {
+		    		temp.removeFirst();
 		    	}
 		    }
-		    //System.out.println(fringe.getFirst().state.price);
-		    fringe.remove();
-		    /*
-		    try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		    	*/
-		    //System.out.println(Node.nodesExpanded);
+		    System.out.println(Node.nodesExpanded);
+	    	//System.out.println("Price: " + currentNode.state.price);
+	    	//currentNode.state.printMap(currentNode.state.map);
+	    	//System.out.println(closedList.size());
+		    //System.out.println(openList.size());
+		    if (!closedList.contains(currentNode))
+		    	closedList.addFirst(currentNode);
+		    openList.remove();
+
 		}
 		return ret;
 	}

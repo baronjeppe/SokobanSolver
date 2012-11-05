@@ -27,7 +27,7 @@ class State {
 		noOfMoves = 0;
 		price = 0;
 		heuristic = Astar.calcMoverRoute(original_map);
-
+		
    
     }
     
@@ -48,48 +48,48 @@ class State {
     }
     
     private int calcNewBoxPrice(int newBoxX, int newBoxY, int boxX, int boxY){
-    	return 0;//heuristic[newBoxX][newBoxY] - heuristic[boxX][boxY];
+    	return 0;//-10*(heuristic[newBoxX][newBoxY] - heuristic[boxX][boxY]);
     }
 	
-    private void makeMove(int newX, int newY) {
+    private void makeMove(int newX, int newY, boolean moveBox) {
     	map[newX][newY] = 10;
 		map[mover[0]][mover[1]] = original_map[mover[0]][mover[1]];
     	// up
     	if ((newY - mover[1]) == -1){
-    		if(map[mover[0]][mover[1] + 1] >= 1000 && map[mover[0]][mover[1] + 1] < 10000){
+    		if(map[mover[0]][mover[1] + 1] >= 1000 && map[mover[0]][mover[1] + 1] < 10000 && moveBox){
     			map[mover[0]][mover[1]] = map[mover[0]][mover[1] + 1];
     			map[mover[0]][mover[1] + 1] = original_map[mover[0]][mover[1] + 1];
     			boxMoved = true;
-    			price += calcNewBoxPrice(mover[0],mover[1]+1, mover[0],mover[1]);
+    			price += calcNewBoxPrice(mover[0],mover[1]-1, mover[0],mover[1]);
     		}
     	}	
     	// down
     	if ((newY - mover[1]) == 1){
-    		if(map[mover[0]][mover[1] - 1] >= 1000 && map[mover[0]][mover[1] - 1] < 10000){
+    		if(map[mover[0]][mover[1] - 1] >= 1000 && map[mover[0]][mover[1] - 1] < 10000 && moveBox){
     			map[mover[0]][mover[1]] = map[mover[0]][mover[1] - 1];
     			map[mover[0]][mover[1] - 1] = original_map[mover[0]][mover[1] - 1];
     			boxMoved = true;
-    			price += calcNewBoxPrice(mover[0],mover[1]-1, mover[0],mover[1]);
+    			price += calcNewBoxPrice(mover[0],mover[1]+1, mover[0],mover[1]);
 
     		}
     	}	
     	// left
     	if ((newX - mover[0]) == -1){
-    		if(map[mover[0] + 1][mover[1]] >= 1000 && map[mover[0] + 1][mover[1]] < 10000){
+    		if(map[mover[0] + 1][mover[1]] >= 1000 && map[mover[0] + 1][mover[1]] < 10000 && moveBox){
     			map[mover[0]][mover[1]] = map[mover[0] + 1][mover[1]];
     			map[mover[0] + 1][mover[1]] = original_map[mover[0] + 1][mover[1]];
     			boxMoved = true;
-    			price += calcNewBoxPrice(mover[0]+1,mover[1], mover[0],mover[1]);
+    			price += calcNewBoxPrice(mover[0]-1,mover[1], mover[0],mover[1]);
 
     		}
     	}	
     	// right
     	if ((newX - mover[0]) == 1){
-    		if(map[mover[0] - 1][mover[1]] >= 1000 && map[mover[0] - 1][mover[1]] < 10000){
+    		if(map[mover[0] - 1][mover[1]] >= 1000 && map[mover[0] - 1][mover[1]] < 10000 && moveBox){
     			map[mover[0]][mover[1]] = map[mover[0] - 1][mover[1]];
     			map[mover[0] - 1][mover[1]] = original_map[mover[0] - 1][mover[1]];
     			boxMoved = true;
-    			price += calcNewBoxPrice(mover[0]-1,mover[1], mover[0],mover[1]);
+    			price += calcNewBoxPrice(mover[0]+1,mover[1], mover[0],mover[1]);
 
     		}
     	}	
@@ -100,7 +100,7 @@ class State {
     
     private boolean isMoveLegal(int newX, int newY)
     {
-    	if(map[newX][newY] == 2 || ((map[newX][newY]  >= 1000 && map[newX][newY] < 9999)))
+    	if(map[newX][newY] == 2 || ((map[newX][newY]  >= 100 && map[newX][newY] < 999)))
     		return true;
     	return false;
     }
@@ -109,15 +109,30 @@ class State {
 	if (!isMoveLegal(mover[0],mover[1]-1)) return(null);
 	
 	State newState = new State( this );
-	newState.makeMove(mover[0],mover[1]-1);
+	newState.makeMove(mover[0],mover[1]-1, true);
 	return(newState);	    
     }
 
+    public State actionUpN() {
+	if (!isMoveLegal(mover[0],mover[1]-1) || map[mover[0]][mover[1]+1] < 1000) return(null);
+	State newState = new State( this );
+	newState.makeMove(mover[0],mover[1]-1, false);
+	return(newState);	    
+    }
+    
     public State actionDown() {
     if (!isMoveLegal(mover[0],mover[1]+1)) return(null);
 	
     State newState = new State( this );
-	newState.makeMove(mover[0],mover[1]+1);
+	newState.makeMove(mover[0],mover[1]+1, true);
+	return(newState);	    
+    }
+    
+    public State actionDownN() {
+	if (!isMoveLegal(mover[0],mover[1]+1) || map[mover[0]][mover[1]-1] < 1000) return(null);
+	
+	State newState = new State( this );
+	newState.makeMove(mover[0],mover[1]+1, false);
 	return(newState);	    
     }
 
@@ -125,7 +140,15 @@ class State {
     if (!isMoveLegal(mover[0]-1,mover[1])) return(null);
 	
     State newState = new State( this );
-	newState.makeMove(mover[0]-1,mover[1]);
+	newState.makeMove(mover[0]-1,mover[1], true);
+	return(newState);	    
+    }
+    
+    public State actionLeftN() {
+    if (!isMoveLegal(mover[0]-1,mover[1]) || map[mover[0]+1][mover[1]] < 1000) return(null);
+
+    State newState = new State( this );
+	newState.makeMove(mover[0]-1,mover[1], false);
 	return(newState);	    
     }
 
@@ -133,17 +156,22 @@ class State {
     if (!isMoveLegal(mover[0]+1,mover[1])) return(null);
 	
     State newState = new State( this );
-	newState.makeMove(mover[0]+1,mover[1]);
+	newState.makeMove(mover[0]+1,mover[1], true);
 	return(newState);	    
     }
     
+    public State actionRightN() {
+    if (!isMoveLegal(mover[0]+1,mover[1]) || map[mover[0]-1][mover[1]] < 1000) return(null);
+	
+    State newState = new State( this );
+	newState.makeMove(mover[0]+1,mover[1], false);
+	return(newState);	    
+    }
+
+    
     public boolean equalToMap(int[][] Map)
     {
-    /*	System.out.println("Original map:");
-    	printMap(Map);
-    	System.out.println("Node map:");
-    	printMap(map);
-	*/	for (int i = 0; i<map.length; i++)
+    	for (int i = 0; i<map.length; i++)
 			for (int j = 0; j<map[0].length;j++)
 				if(Map[i][j] != 100)
 					if (Map[i][j] != map[i][j])
@@ -159,11 +187,4 @@ class State {
 		}
 		System.out.println();
 	}
-
- /*   public boolean equals( State s ) {
-	for(int i=0;i<9;i++) {
-	    if (tilePositions[i]!=s.tilePositions[i]) return(false);
-	}
-	return(true);
-    }*/
 }
