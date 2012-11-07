@@ -1,6 +1,7 @@
 package timer;
 public class Timer {
 	private long startTime = System.nanoTime();
+	private long pause = 0;
 	
 	public Timer () {}
 	
@@ -10,6 +11,14 @@ public class Timer {
 	
 	public long timeSinceStartInNS () {
 		return System.nanoTime() - startTime;
+	}
+	
+	public void pause() {
+		pause = System.nanoTime();
+	}
+	
+	public void resume() {
+		startTime += System.nanoTime() - pause;
 	}
 	
 	public float timeSinceStartInMilliSeconds () {

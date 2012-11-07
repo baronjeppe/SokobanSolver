@@ -13,10 +13,9 @@ public class Main {
 		mc = new MapController("mymap.txt");
 		t.restart();
 		String test = mc.solve();
-        t.printTimeSinceStartInSeconds();
-		System.out.println(mc.calcRouteForSokobandit(test, 'r', true, 100));
-		//kommentaren er en gittest... bare slet
-
+        System.out.println("Solution: " + test);
+		t.printTimeSinceStartInSeconds();
+		System.out.println(mc.calcRouteForSokobandit(test, 'r', true, 50));
 	}
 	
 }

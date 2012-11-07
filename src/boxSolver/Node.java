@@ -1,7 +1,7 @@
 package boxSolver;
 import java.util.*;
 
-class Node {
+public class Node implements Comparable<Node> {
     public Node parent;
     public State state;
     public char move;
@@ -43,7 +43,6 @@ class Node {
     
     public String printSolution(){
     	if( parent!= null ) {
-    	    System.out.print( move );
     	    return move + parent.printSolution();
     	}
     	return "";
@@ -73,6 +72,18 @@ class Node {
     	System.out.println(state.equalToMap(temp.state.map));*/
     	return state.equalToMap(temp.state.map);
     }
+
+
+	@Override
+	public int compareTo(Node arg) {
+
+		if (state.price > arg.state.price)
+			return 1;
+		else if (state.price < arg.state.price)
+			return -1;
+
+		return 0;	
+	}
 
     
  

@@ -1,16 +1,19 @@
-package Hashing;
-public class QuadraticProbingHashTable<AnyType>
-{
-    private static final int DEFAULT_TABLE_SIZE = 197779;
+package NodeHashing;
 
-    private HashEntry<AnyType> [ ] array; // The array of elements
+import boxSolver.Node;
+
+public class NodeHashTable
+{
+    private static final int DEFAULT_TABLE_SIZE = 11;
+
+    private HashEntry [ ] array; // The array of elements
     private int currentSize;              // The number of occupied cells
     private int collisions = 0;
-
+    
     /**
      * Construct the hash table.
      */
-    public QuadraticProbingHashTable( )
+    public NodeHashTable( )
     {
         this( DEFAULT_TABLE_SIZE );
     }
@@ -19,9 +22,13 @@ public class QuadraticProbingHashTable<AnyType>
      * Construct the hash table.
      * @param size the approximate initial size.
      */
-    public QuadraticProbingHashTable( int size )
+    public NodeHashTable( int size )
     {
-        allocateArray( size );
+    	int temp = size;
+    	if (!isPrime(temp))
+    		temp = nextPrime(temp);
+    	
+		allocateArray( temp );
         makeEmpty( );
     }
     public int getSize( )
@@ -57,7 +64,7 @@ public class QuadraticProbingHashTable<AnyType>
      * @param x the item to search for.
      * @return the matching item.
      */
-    public boolean contains( AnyType x )
+    public boolean contains( Node x )
     {
         int currentPos = findPos( x );
         return isActive( currentPos );
@@ -69,10 +76,10 @@ public class QuadraticProbingHashTable<AnyType>
      * @return the position where the search terminates.
      */
     
-    public int findPos( AnyType x )
+    public int findPos( Node x )
     {
         int offset = 1;
-        int startPos = hash( x.toString(), array.length );
+        int startPos = hash( x, array.length );
         int currentPos = startPos;
         
         while( array[ currentPos ] != null && !array[ currentPos ].element.equals( x ) )
@@ -105,14 +112,14 @@ public class QuadraticProbingHashTable<AnyType>
      * already present, do nothing.
      * @param x the item to insert.
      */
-    public void insert( AnyType x )
+    public void insert( Node x )
     {
             // Insert x as active
         int currentPos = findPos( x );
         if( isActive( currentPos ) )
             return;
 
-        array[ currentPos ] = new HashEntry<AnyType>( x, true );
+        array[ currentPos ] = new HashEntry( x, true );
 
             // Rehash; see Section 5.5
         if( ++currentSize > array.length / 2 )
@@ -123,7 +130,7 @@ public class QuadraticProbingHashTable<AnyType>
      * Remove from the hash table.
      * @param x the item to remove.
      */
-    public void remove( AnyType x )
+    public void remove( Node x )
     {
         int currentPos = findPos( x );
         if( isActive( currentPos ) )
@@ -133,20 +140,20 @@ public class QuadraticProbingHashTable<AnyType>
     }
 
 
-    public static class HashEntry<AnyType>
+    public static class HashEntry
     {
-        public AnyType  element;  // the element
+        public Node  element;  // the element
         public boolean isActive;  // false if marked deleted
 
-        public HashEntry( AnyType e )
+        public HashEntry( Node e )
           { this( e, true ); }
 
-        public HashEntry( AnyType e, boolean i )
+        public HashEntry( Node e, boolean i )
           { element  = e; isActive = i; }
           
         public String toString()
         {
-            return (String) element;
+            return element.toString();
         }
     }
 
@@ -156,7 +163,7 @@ public class QuadraticProbingHashTable<AnyType>
      */
     private void rehash( )
     {
-        HashEntry<AnyType> [ ] oldArray = array;
+        HashEntry [ ] oldArray = array;
 
             // Create a new double-sized, empty table
         allocateArray( nextPrime( 2 * oldArray.length ) );
@@ -168,12 +175,13 @@ public class QuadraticProbingHashTable<AnyType>
                 insert( oldArray[ i ].element );
     }
        
-    public static int hash( String key, int tableSize )
+    public static int hash( Node key, int tableSize )
     {
         int hashVal = 0;
 
-        for( int i = 0; i < key.length( ); i++ )
-            hashVal = 37 * hashVal + key.charAt( i );
+        for( int i = 0; i < key.state.map.length; i++ )
+        	for (int j = 0; j < key.state.map[0].length; j++)
+        		hashVal = 37 * hashVal + key.state.map[i][j] + 37;
 
         hashVal %= tableSize;
         if( hashVal < 0 )

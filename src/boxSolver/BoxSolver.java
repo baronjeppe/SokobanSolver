@@ -1,9 +1,10 @@
 package boxSolver;
 
-import Hashing.QuadraticProbingHashTable;
+import NodeHashing.NodeHashTable;
 import boxSolver.Node;
 
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 
 public class BoxSolver {
 
@@ -47,10 +48,11 @@ public class BoxSolver {
 	{
 		String ret = new String();
 		
-		LinkedList<Node> openList = new LinkedList<Node>();
-		//LinkedList<Node> closedList = new LinkedList<Node>();
-		QuadraticProbingHashTable<Node> closedList = new QuadraticProbingHashTable<Node>();
-		QuadraticProbingHashTable<Node> openListHash = new QuadraticProbingHashTable<Node>();
+		PriorityQueue<Node> openList = new PriorityQueue<Node>();
+		
+		NodeHashTable closedList = new NodeHashTable(200000);
+		NodeHashTable openListHash = new NodeHashTable(30000);
+		
 		LinkedList<Node> temp = new LinkedList<Node>();
 
 		
@@ -68,10 +70,11 @@ public class BoxSolver {
 		    	break;
 		    }
 		    
-		    Node currentNode = openList.get(0);
+		    Node currentNode = openList.peek();
 		    
 		    if (currentNode.state.equalToMap(map)) {
 		    	System.out.println("Solution Found\n");
+		    	System.out.println("Collisions: " + closedList.getCollisions());
 		    	ret = currentNode.printSolution();
 		    	System.out.println("Price: " + currentNode.state.price);
 		    	System.out.println("Nodes expanded: " + Integer.toString( Node.nodesExpanded ) );
@@ -80,22 +83,9 @@ public class BoxSolver {
 		    temp = currentNode.expand();
 		    
 		    while(!temp.isEmpty()){
-		    	boolean placeFound = false;
-		    	
 		    	if (!openListHash.contains(temp.getFirst()) && !closedList.contains(temp.getFirst())) {
-			    	for(int i = 0; i < openList.size(); i++){
-			    		if(temp.getFirst().state.price < openList.get(i).state.price){
-			    			openList.add(i,temp.getFirst());
-			    			openListHash.insert(temp.pollFirst());
-			    			placeFound = true;
-			    			break;
-			    		}
-			    	}
-			    	if (!placeFound) {
-		    			openList.add(temp.getFirst());
-		    			openListHash.insert(temp.pollFirst());
-			    	}
-
+		    		openList.add(temp.getFirst());
+		    		openListHash.insert(temp.pollFirst());
 		    	}
 		    	else {
 		    		temp.removeFirst();
@@ -108,9 +98,8 @@ public class BoxSolver {
 		    //System.out.println(openList.size());
 		    if (!closedList.contains(currentNode))
 		    	closedList.insert(currentNode);
-		    openList.remove();
+		    openList.remove(currentNode);
 		    openListHash.remove(currentNode);
-
 		}
 		return ret;
 	}

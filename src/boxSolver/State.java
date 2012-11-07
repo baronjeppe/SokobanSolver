@@ -2,10 +2,10 @@ package boxSolver;
 
 import tools.Astar;
 
-class State {
+public class State {
 
-    int map[][];
-    int heuristic[][];
+    public int map[][];
+    int boxHeuristic[][];
     int mover[];
     boolean boxMoved = false;
     int price;
@@ -26,7 +26,7 @@ class State {
 		mover[1] = Mover[1];
 		noOfMoves = 0;
 		price = 0;
-		heuristic = Astar.calcMoverRoute(original_map);
+		boxHeuristic = Astar.calcBoxHeuristic(original_map);
 		
    
     }
@@ -42,15 +42,19 @@ class State {
 		mover[0] = orig.mover[0];
 		mover[1] = orig.mover[1];
 		noOfMoves = orig.noOfMoves + 1;
-		heuristic = Astar.calcMoverRoute(original_map);
+		boxHeuristic = Astar.calcBoxHeuristic(original_map);
 		price = orig.price + 1;
 
     }
     
-    private int calcNewBoxPrice(int newBoxX, int newBoxY, int boxX, int boxY){
-    	return 0;//-10*(heuristic[newBoxX][newBoxY] - heuristic[boxX][boxY]);
+    private int calcBoxPrice(int newBoxX, int newBoxY, int boxX, int boxY){
+    	return (boxHeuristic[newBoxX][newBoxY] - boxHeuristic[boxX][boxY]);
     }
 	
+    private int calcMoverPrice(int newBoxX, int newBoxY, int boxX, int boxY){
+    	return (boxHeuristic[newBoxX][newBoxY] - boxHeuristic[boxX][boxY]);
+    }
+    
     private void makeMove(int newX, int newY, boolean moveBox) {
     	map[newX][newY] = 10;
 		map[mover[0]][mover[1]] = original_map[mover[0]][mover[1]];
@@ -60,7 +64,7 @@ class State {
     			map[mover[0]][mover[1]] = map[mover[0]][mover[1] + 1];
     			map[mover[0]][mover[1] + 1] = original_map[mover[0]][mover[1] + 1];
     			boxMoved = true;
-    			price += calcNewBoxPrice(mover[0],mover[1]-1, mover[0],mover[1]);
+    			price += calcBoxPrice(mover[0],mover[1]-1, mover[0],mover[1]);
     		}
     	}	
     	// down
@@ -69,7 +73,7 @@ class State {
     			map[mover[0]][mover[1]] = map[mover[0]][mover[1] - 1];
     			map[mover[0]][mover[1] - 1] = original_map[mover[0]][mover[1] - 1];
     			boxMoved = true;
-    			price += calcNewBoxPrice(mover[0],mover[1]+1, mover[0],mover[1]);
+    			price += calcBoxPrice(mover[0],mover[1]+1, mover[0],mover[1]);
 
     		}
     	}	
@@ -79,7 +83,7 @@ class State {
     			map[mover[0]][mover[1]] = map[mover[0] + 1][mover[1]];
     			map[mover[0] + 1][mover[1]] = original_map[mover[0] + 1][mover[1]];
     			boxMoved = true;
-    			price += calcNewBoxPrice(mover[0]-1,mover[1], mover[0],mover[1]);
+    			price += calcBoxPrice(mover[0]-1,mover[1], mover[0],mover[1]);
 
     		}
     	}	
@@ -89,11 +93,13 @@ class State {
     			map[mover[0]][mover[1]] = map[mover[0] - 1][mover[1]];
     			map[mover[0] - 1][mover[1]] = original_map[mover[0] - 1][mover[1]];
     			boxMoved = true;
-    			price += calcNewBoxPrice(mover[0]+1,mover[1], mover[0],mover[1]);
+    			price += calcBoxPrice(mover[0]+1,mover[1], mover[0],mover[1]);
 
     		}
     	}	
 
+    	price -= calcMoverPrice(newX,newY,mover[0],mover[1]);
+    	
     	mover[0] = newX;
     	mover[1] = newY;
     }

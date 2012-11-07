@@ -23,7 +23,7 @@ public class Astar {
 		return ret;
 	}
 	
-	public static int[][] calcMoverRoute(int[][] map)
+	public static int[][] calcBoxHeuristic(int[][] map)
 	{
 		int[][] ret = new int[map.length][map[0].length];
 		Square[][] squares = new Square[map.length][map[0].length];
@@ -88,9 +88,9 @@ public class Astar {
 		}*/	
 		
 		
-		for(int i = 0; i < map.length; i++)
-			for(int j = 0; j < map[0].length; j++)
-				ret[i][j] = squares[j][i].price;
+		for(int i = 0; i < map[0].length; i++)
+			for(int j = 0; j < map.length; j++)
+				ret[j][i] = squares[j][i].price;
 		
 		return ret;
 		
