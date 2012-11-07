@@ -96,6 +96,18 @@ public class Astar {
 		
 	}
 	
+	public static int calcPrice(int[][] map, int[][] heuristic)
+	{
+		int ret = 0;
+		for(int i = 0; i < map.length; i++)
+			for(int j = 0; j < map[0].length; j++)
+				if (map[i][j] == 1000)
+					ret += heuristic[i][j];
+		return ret;
+	
+		
+	}
+	
 	private String RouteToString(Square[][] squares, int[] start)
 	{
 		Square curSq = squares[start[0]][start[1]];

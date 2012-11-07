@@ -50,7 +50,7 @@ public class MapController {
 	{
 		BoxSolver BS = new BoxSolver();
 		
-		return BS.solve(map.map, findSolver(map));
+		return BS.solve(map.map, findSolver(map), viewer);
 	}
 	
 	public String calcRouteForSokobandit(String sol, char start_orientation, boolean show_route, int wait)
@@ -287,6 +287,11 @@ public class MapController {
 			for(int j = 0; j < mapIn[0].length; j++)
 				mapIn[i][j] = 0;
 		return mapIn;
+	}
+	
+	public void updateViewer(int[][] map)
+	{
+		viewer.updateMap(map);
 	}
 
 	private Map loader(){

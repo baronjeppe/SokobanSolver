@@ -6,6 +6,8 @@ import boxSolver.Node;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
+import map.Viewer;
+
 public class BoxSolver {
 
 	public BoxSolver() {
@@ -44,7 +46,7 @@ public class BoxSolver {
 		return ret;
 	}
 	
-	public String solve(int[][] map, int[] mover)
+	public String solve(int[][] map, int[] mover, Viewer viewer)
 	{
 		String ret = new String();
 		
@@ -96,6 +98,16 @@ public class BoxSolver {
 	    	//currentNode.state.printMap(currentNode.state.map);
 	    	//System.out.println(closedList.size());
 		    //System.out.println(openList.size());
+		    
+		  /*viewer.updateMap(currentNode.state.map);
+		    try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    */
+		    
 		    if (!closedList.contains(currentNode))
 		    	closedList.insert(currentNode);
 		    openList.remove(currentNode);
