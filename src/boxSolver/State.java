@@ -74,7 +74,6 @@ public class State {
     			map[mover[0]][mover[1] - 1] = original_map[mover[0]][mover[1] - 1];
     			boxMoved = true;
     			price += calcBoxPrice(mover[0],mover[1]+1, mover[0],mover[1]);
-
     		}
     	}	
     	// left
@@ -84,7 +83,6 @@ public class State {
     			map[mover[0] + 1][mover[1]] = original_map[mover[0] + 1][mover[1]];
     			boxMoved = true;
     			price += calcBoxPrice(mover[0]-1,mover[1], mover[0],mover[1]);
-
     		}
     	}	
     	// right
@@ -94,9 +92,11 @@ public class State {
     			map[mover[0] - 1][mover[1]] = original_map[mover[0] - 1][mover[1]];
     			boxMoved = true;
     			price += calcBoxPrice(mover[0]+1,mover[1], mover[0],mover[1]);
-
     		}
-    	}	
+    	}
+    	
+    	if (!moveBox)
+    		price+=2;
 
     	price -= calcMoverPrice(newX,newY,mover[0],mover[1]);
     	
@@ -185,7 +185,7 @@ public class State {
 		return true;
 	}
     
-	public void printMap(int[][] map){
+	public void printMap(){
 		for(int i = 0 ; i < map[0].length ; i++){
 			for(int j = 0; j < map.length ; j++)
 				System.out.print(map[j][i] + " ");

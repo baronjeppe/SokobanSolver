@@ -10,12 +10,16 @@ public class Main {
 	public static void main(String[] args) {
 		
 		Timer t = new Timer();
-		mc = new MapController("mymap.txt");
+		mc = new MapController("mymap5.txt");
 		t.restart();
-		String test = mc.solve();
-        System.out.println("Solution: " + test);
+		String solution = mc.solve();
+        System.out.println("Solution: " + solution);
+        System.out.println("Path Length: " + solution.length());
 		t.printTimeSinceStartInSeconds();
-		System.out.println(mc.calcRouteForSokobandit(test, 'r', true, 50));
+		
+		String sokobanditRoute = mc.calcRouteForSokobandit(solution, 'r', true, 50); 
+		System.out.println("Route for robot: " + sokobanditRoute);
+		System.out.println("Length of robot route: " + sokobanditRoute.length());
 	}
 	
 }

@@ -16,14 +16,13 @@ public class ShowBackground extends JComponent {
 		public ShowBackground(int x_, int y_) {
 			x = x_;
 			y = y_;
-		try {
-		
-		String imageName= "src/map/background.jpg";
-		File input = new File(imageName);
-		image = ImageIO.read(input);
-		} catch (IOException ie) {
-		System.out.println("Error:"+ie.getMessage());
-		}
+			try {
+				String imageName= "src/map/background.jpg";
+				File input = new File(imageName);
+				image = ImageIO.read(input);
+			} catch (IOException ie) {
+				System.out.println("Error:"+ie.getMessage());
+			}
 		}
 
 		public void paint(Graphics g) {

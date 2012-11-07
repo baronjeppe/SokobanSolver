@@ -16,14 +16,13 @@ public class ShowWall extends JComponent {
 		public ShowWall(int x_, int y_) {
 			x = x_;
 			y = y_;
-		try {
-		
-		String imageName= "src/map/wall.jpg";
-		File input = new File(imageName);
-		image = ImageIO.read(input);
-		} catch (IOException ie) {
-		System.out.println("Error:"+ie.getMessage());
-		}
+			try {
+				String imageName= "src/map/wall.jpg";
+				File input = new File(imageName);
+				image = ImageIO.read(input);
+			} catch (IOException ie) {
+				System.out.println("Error:"+ie.getMessage());
+			}
 		}
 
 		public void paint(Graphics g) {

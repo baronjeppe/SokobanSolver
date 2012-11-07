@@ -5,7 +5,7 @@ public class Node implements Comparable<Node> {
     public Node parent;
     public State state;
     public char move;
-
+ 
     public static int nodesExpanded = 0;
 
     Node(Node parent, char move, State state) {
@@ -21,14 +21,6 @@ public class Node implements Comparable<Node> {
 	
 		State newState;
 		
-		newState = state.actionRightN();
-		if (newState!=null) childNodes.addLast( new Node(this, 'L', newState ) );
-		newState = state.actionLeftN();
-		if (newState!=null) childNodes.addLast( new Node(this, 'R', newState ) );	    
-		newState = state.actionUpN();
-		if (newState!=null) childNodes.addLast( new Node(this, 'D', newState ) );
-		newState = state.actionDownN();
-		if (newState!=null) childNodes.addLast( new Node(this, 'U', newState ) );
 		newState = state.actionRight();
 		if (newState!=null) childNodes.addLast( new Node(this, 'L', newState ) );
 		newState = state.actionLeft();
@@ -36,6 +28,14 @@ public class Node implements Comparable<Node> {
 		newState = state.actionUp();
 		if (newState!=null) childNodes.addLast( new Node(this, 'D', newState ) );
 		newState = state.actionDown();
+		if (newState!=null) childNodes.addLast( new Node(this, 'U', newState ) );
+		newState = state.actionRightN();
+		if (newState!=null) childNodes.addLast( new Node(this, 'L', newState ) );
+		newState = state.actionLeftN();
+		if (newState!=null) childNodes.addLast( new Node(this, 'R', newState ) );	    
+		newState = state.actionUpN();
+		if (newState!=null) childNodes.addLast( new Node(this, 'D', newState ) );
+		newState = state.actionDownN();
 		if (newState!=null) childNodes.addLast( new Node(this, 'U', newState ) );
 		
 		return(childNodes);
