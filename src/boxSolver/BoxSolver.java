@@ -6,6 +6,8 @@ import boxSolver.Node;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
+import timer.Timer;
+
 import map.Viewer;
 
 public class BoxSolver {
@@ -39,7 +41,7 @@ public class BoxSolver {
 				if (map[i][j] == 100)
 					ret[i][j] = 1000;
 				else if (map[i][j] == 1000)
-					ret[i][j] = 2;
+					ret[i][j] = 100;
 				else
 					ret[i][j] = map[i][j];
 			}
@@ -52,11 +54,13 @@ public class BoxSolver {
 		
 		PriorityQueue<Node> openList = new PriorityQueue<Node>();
 		
-		NodeHashTable closedList = new NodeHashTable(200000);
-		NodeHashTable openListHash = new NodeHashTable(30000);
+		NodeHashTable closedList = new NodeHashTable();
+		NodeHashTable openListHash = new NodeHashTable();
 		
 		LinkedList<Node> temp = new LinkedList<Node>();
 
+		Timer timer = new Timer();
+	    long time = 0;
 		
 		State.original_map = makeOriginalMap(map);
 		State initialState = new State(reverseMap(map), mover);
@@ -78,6 +82,7 @@ public class BoxSolver {
 		    	System.out.println("Solution Found\n");
 		    	System.out.println("Collisions: " + closedList.getCollisions());
 		    	ret = currentNode.printSolution();
+		    	
 		    	System.out.println("Price: " + currentNode.state.price);
 		    	System.out.println("Nodes expanded: " + Integer.toString( Node.nodesExpanded ) );
 		    	break;
@@ -98,15 +103,20 @@ public class BoxSolver {
 	    	//currentNode.state.printMap(currentNode.state.map);
 	    	//System.out.println(closedList.size());
 		    //System.out.println(openList.size());
-		    
-		  /*viewer.updateMap(currentNode.state.map);
+		    /*
+		    viewer.updateMap(currentNode.state.map);
 		    try {
-				Thread.sleep(50);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		    */
+		   */
+		    if ((timer.timeSinceStartInNS() - time) > 1000000000)
+		    {
+		    	time += 1000000000;
+		    	System.out.println("Time elapsed: " + timer.timeSinceStartInSeconds() + " seconds \t Nodes expanded: " + Node.nodesExpanded + "\tOpenlist: " + openList.size());
+		    }
 		    
 		    if (!closedList.contains(currentNode))
 		    	closedList.insert(currentNode);

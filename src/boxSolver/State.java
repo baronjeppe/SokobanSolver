@@ -6,14 +6,15 @@ public class State {
 
     public int map[][];
     public static int boxHeuristic[][];
+    int moverHeuristic[][];
     int mover[];
-    boolean boxMoved = false;
     int price;
     int steps;
     int noOfMoves;
     
+    public boolean boxMoved = false;
+    
     public static int original_map[][];
-    public static int goals;
    
     public State() {}
     public State(int[][] Map, int[] Mover) {
@@ -27,10 +28,11 @@ public class State {
 		mover[0] = Mover[0];
 		mover[1] = Mover[1];
 		boxHeuristic = Astar.calcBoxHeuristic(original_map);
-		goals = Astar.findGoals(original_map).size()/2;
 		price = Astar.calcPrice(map, boxHeuristic);
 		steps = 0;
-		printMap(boxHeuristic);
+		moverHeuristic = Astar.calcMoverHeuristic(map);
+		printMap(map);
+		printMap(moverHeuristic);
     }
     
     public State(State orig){
@@ -44,11 +46,11 @@ public class State {
 		mover[0] = orig.mover[0];
 		mover[1] = orig.mover[1];
 		steps = orig.steps + 1;
-		price = Astar.calcPrice(map, boxHeuristic) + steps;
+		moverHeuristic = orig.moverHeuristic; // Astar.calcMoverHeuristic(map);
     }
 	
     private int calcMoverPrice(int newBoxX, int newBoxY, int boxX, int boxY){
-    	return (boxHeuristic[newBoxX][newBoxY] - boxHeuristic[boxX][boxY]);
+    	return (moverHeuristic[newBoxX][newBoxY] - moverHeuristic[boxX][boxY]);
     }
     
     private void makeMove(int newX, int newY, boolean moveBox) {
@@ -88,12 +90,17 @@ public class State {
     	}
     	
     	if (!moveBox)
-    		steps+=2;
+    		//steps+=2;
+    	
+    	if (boxMoved)
+    		moverHeuristic = Astar.calcMoverHeuristic(map);
 
-    	steps -= calcMoverPrice(newX,newY,mover[0],mover[1]);
+    	steps += calcMoverPrice(newX,newY,mover[0],mover[1]);
     	
     	mover[0] = newX;
     	mover[1] = newY;
+    	
+    	price = 2 * Astar.calcPrice(map, boxHeuristic) + steps;
     }
     
     private boolean isMoveLegal(int newX, int newY)

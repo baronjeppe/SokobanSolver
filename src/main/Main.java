@@ -10,7 +10,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 		Timer t = new Timer();
-		mc = new MapController("mymap4.txt");
+		mc = new MapController("mymap.txt");
 		t.restart();
 		String solution = mc.solve();
         System.out.println("Solution: " + solution);

@@ -12,12 +12,12 @@ public class Node implements Comparable<Node> {
 	this.parent = parent;
 	this.state = state;
 	this.move = move;
+	nodesExpanded++;
     }
 
 
     LinkedList<Node> expand() {
 		LinkedList<Node> childNodes = new LinkedList<Node>();
-		nodesExpanded++;
 	
 		State newState;
 		
@@ -41,9 +41,27 @@ public class Node implements Comparable<Node> {
 		return(childNodes);
     }
     
-    public String printSolution(){
+    public String printSolution()
+    {
+    	String ret = printInnerSolution();
+    	
+    	while (Character.isLowerCase(ret.charAt(ret.length()-1)))
+    		ret = ret.substring(0, ret.length()-1);
+    	
+    	return ret;
+    }
+    
+    private String printInnerSolution(){
     	if( parent!= null ) {
-    	    return move + parent.printSolution();
+    		if (state.boxMoved)
+    			return move + parent.printInnerSolution();
+    		else
+    		{
+    			String temp = new String();
+    			temp += move;
+    			return temp.toLowerCase() + parent.printInnerSolution();
+    		}
+
     	}
     	return "";
     }
