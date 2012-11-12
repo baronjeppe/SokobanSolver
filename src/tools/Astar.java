@@ -50,10 +50,6 @@ public class Astar {
 		ArrayList<Square> open_list = new ArrayList<Square>();
 		ArrayList<Integer> goals = findBoxes(map);
 		
-		/*for(int i = 0; i < goals.size(); i++)
-			System.out.println(goals.get(i));*/
-
-		
 		for(int i = 0; i < goals.size(); i += 2){
 			squares[goals.get(i)][goals.get(i+1)].price = 0;
 			open_list.add(squares[goals.get(i)][goals.get(i+1)]);
@@ -94,14 +90,6 @@ public class Astar {
 			
 			open_list.remove(0);
 		}
-		/*
-		for (int i = 0; i < map[0].length; i++){
-			for (int j = 0; j < map.length; j++){
-				System.out.print(squares[j][i].price + "\t");
-			}
-			System.out.println("");
-		}*/	
-		
 		
 		for(int i = 0; i < map[0].length; i++)
 			for(int j = 0; j < map.length; j++)
@@ -223,11 +211,7 @@ public class Astar {
 		
 		ArrayList<Square> open_list = new ArrayList<Square>();
 		ArrayList<Integer> goals = findGoals(map);
-		
-		/*for(int i = 0; i < goals.size(); i++)
-			System.out.println(goals.get(i));*/
-
-		
+	
 		for(int i = 0; i < goals.size(); i += 2){
 			squares[goals.get(i)][goals.get(i+1)].price = 0;
 			open_list.add(squares[goals.get(i)][goals.get(i+1)]);
@@ -268,14 +252,6 @@ public class Astar {
 			
 			open_list.remove(0);
 		}
-		/*
-		for (int i = 0; i < map[0].length; i++){
-			for (int j = 0; j < map.length; j++){
-				System.out.print(squares[j][i].price + "\t");
-			}
-			System.out.println("");
-		}*/	
-		
 		
 		for(int i = 0; i < map[0].length; i++)
 			for(int j = 0; j < map.length; j++)

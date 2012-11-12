@@ -100,7 +100,7 @@ public class State {
     	mover[0] = newX;
     	mover[1] = newY;
     	
-    	price = 2 * Astar.calcPrice(map, boxHeuristic) + steps;
+    	price = Astar.calcPrice(map, boxHeuristic) + steps;
     }
     
     private boolean isMoveLegal(int newX, int newY)
