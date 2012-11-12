@@ -13,7 +13,7 @@ import map.Viewer;
 public class BoxSolver {
 
 	public BoxSolver() {
-
+		Node.nodesExpanded = 0;
 	}
 	
 	private int[][] makeOriginalMap(int[][] map)
@@ -50,6 +50,7 @@ public class BoxSolver {
 	
 	public String solve(int[][] map, int[] mover, Viewer viewer)
 	{
+		Node.nodesExpanded = 0;
 		String ret = new String();
 		
 		PriorityQueue<Node> openList = new PriorityQueue<Node>();
