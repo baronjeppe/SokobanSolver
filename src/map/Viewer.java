@@ -67,7 +67,7 @@ public class Viewer {
 	public void drawMap(int[][] map){
 		map_data = map;
 		frame.getContentPane().removeAll();
-		frame.revalidate();
+		frame.validate();
 		frame.repaint();
 		drawMapPriv(map);
 	}
@@ -97,7 +97,7 @@ public class Viewer {
 				}
 			}
 		}
-		frame.revalidate();
+		frame.validate();
 		frame.repaint();
 		
 		map_data = new int[map.length][];

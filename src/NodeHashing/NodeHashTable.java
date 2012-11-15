@@ -67,6 +67,7 @@ public class NodeHashTable
     public boolean contains( Node x )
     {
         int currentPos = findPos( x );
+        
         return isActive( currentPos );
     }
 
@@ -84,11 +85,10 @@ public class NodeHashTable
         
         while( array[ currentPos ] != null && !array[ currentPos ].element.equals( x ) )
         {
-        	collisions++;
+          	collisions++;
             currentPos = startPos + (offset * offset);  // Compute ith probe using quadratic probing
             offset += 1;
-            if( currentPos >= array.length )
-                currentPos -= array.length;
+            currentPos %= array.length;
         }
         return currentPos;
     }
@@ -186,6 +186,8 @@ public class NodeHashTable
         hashVal %= tableSize;
         if( hashVal < 0 )
             hashVal += tableSize; 
+        if (hashVal >= tableSize)
+        	System.out.println("hej");
         return hashVal;
     }
     public static int simpleHash( String key, int tableSize )
