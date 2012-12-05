@@ -14,7 +14,7 @@ public class Main {
 	public static void main(String[] args) {
 		int repetitions = 10;
 		Timer t = new Timer();
-		mc = new MapController("mymap.txt");
+		mc = new MapController("mymap4.txt");
 		t.restart();
 		String solution = new String();
 		for (int i = 0; i < repetitions; i++)

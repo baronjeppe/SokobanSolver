@@ -95,7 +95,7 @@ public class State {
     	if (boxMoved)
     		moverHeuristic = Astar.calcMoverHeuristic(map);
 
-    	steps += calcMoverPrice(newX,newY,mover[0],mover[1]);
+    	//steps += calcMoverPrice(newX,newY,mover[0],mover[1]);
     	
     	mover[0] = newX;
     	mover[1] = newY;
