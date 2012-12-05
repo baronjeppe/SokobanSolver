@@ -11,7 +11,7 @@ import timer.Timer;
 import map.Viewer;
 
 public class BoxSolver {
-
+	
 	public BoxSolver() {
 		Node.nodesExpanded = 0;
 	}
@@ -55,8 +55,8 @@ public class BoxSolver {
 		
 		PriorityQueue<Node> openList = new PriorityQueue<Node>();
 		
-		NodeHashTable closedList = new NodeHashTable();
-		NodeHashTable openListHash = new NodeHashTable();
+		NodeHashTable closedList = new NodeHashTable(500000);
+		NodeHashTable openListHash = new NodeHashTable(50000);
 		
 		LinkedList<Node> temp = new LinkedList<Node>();
 
@@ -86,6 +86,8 @@ public class BoxSolver {
 		    	
 		    	System.out.println("Price: " + currentNode.state.price);
 		    	System.out.println("Nodes expanded: " + Integer.toString( Node.nodesExpanded ) );
+		    	System.out.println("Nodes on closedlist: " + Integer.toString(closedList.getNoOfElements()));
+		    	System.out.println("Nodes on Openlist: " + Integer.toString(openList.size()));
 		    	break;
 		    }
 		    temp = currentNode.expand();

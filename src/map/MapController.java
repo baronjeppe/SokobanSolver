@@ -3,6 +3,7 @@ package map;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
@@ -204,6 +205,7 @@ public class MapController {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+
 			}
 
 		}
@@ -246,9 +248,16 @@ public class MapController {
 		if (show_route)
 		{
 			viewer.updateMap(_map.map);
-			try {
+			/*try {
 				Thread.sleep(wait);
 			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+			BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+			try {
+				stdin.readLine();
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
